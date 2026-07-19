@@ -72,20 +72,18 @@ understand:
    you don't rebuild the add-on for normal Channels updates. You can also trigger
    updates from the Channels web UI.
 
-2. **The Docker base image** (`fancybits/channels-dvr:latest`) provides the
-   runtime around the server — ffmpeg, OS libraries, GPU userspace. It changes
-   infrequently. To pull a newer base image:
-   - Bump `version` in the add-on's `config.yaml`, commit, and push. Home
-     Assistant will show an **Update** button, and updating rebuilds from the
-     newer `latest`.
-   - Or use **Rebuild** on the add-on's Info page (⋮ menu) to force a fresh
-     build without a version change.
+2. **The Docker base image** (`fancybits/channels-dvr`) provides the runtime
+   around the server — ffmpeg, OS libraries, GPU userspace. It changes
+   infrequently, and it's **updated automatically**: the Dockerfiles pin the
+   base image by **digest** (for reproducible builds), and a scheduled GitHub
+   Action — [`.github/workflows/update-base-image.yml`](.github/workflows/update-base-image.yml) —
+   checks the upstream `latest`/`nvidia` tags daily. When a digest changes it
+   re-pins the Dockerfile and bumps the add-on `version`, so Home Assistant
+   surfaces an **Update** button on its own. No manual version bumping required.
 
-   Because the `Dockerfile` builds `FROM ...:latest`, two rebuilds at different
-   times can produce different base images even at the same add-on `version`. If
-   you want fully reproducible builds, pin a specific tag or digest in the
-   `Dockerfile` (e.g. `FROM fancybits/channels-dvr@sha256:...`) and bump it
-   deliberately.
+   You can also trigger it manually from the repo's **Actions** tab
+   (**Run workflow**), or use **Rebuild** on the add-on's Info page (⋮ menu) to
+   force a fresh build from the currently pinned digest.
 
 > Upstream has a known, occasional self-update hiccup
 > (`remove /channels-dvr/latest: directory not empty`). That's a Channels/image
