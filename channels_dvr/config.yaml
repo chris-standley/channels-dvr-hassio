@@ -1,0 +1,54 @@
+# Home Assistant add-on configuration for Channels DVR Server
+# Docs: https://developers.home-assistant.io/docs/add-ons/configuration
+name: Channels DVR (Intel / AMD)
+version: "1.0.0"
+slug: channels_dvr
+description: >-
+  Channels DVR Server with Intel Quick Sync / AMD VA-API hardware transcoding —
+  record live TV from HDHomeRun tuners and TV Everywhere, with a full DVR,
+  program guide, and apps on every screen. For NVIDIA GPUs, use the
+  "Channels DVR (NVIDIA)" add-on instead.
+url: https://getchannels.com/dvr-server/
+# Channels DVR publishes a multi-arch image for amd64 and arm64.
+arch:
+  - aarch64
+  - amd64
+
+# The upstream fancybits/channels-dvr image ships with its own entrypoint,
+# so we disable Home Assistant's s6 init and let the image start itself.
+init: false
+startup: application
+boot: auto
+
+# Channels DVR needs host networking so it can discover HDHomeRun tuners
+# (SSDP/Bonjour) and serve DLNA to clients on your LAN.
+host_network: true
+
+# Informational when host_network is true, but kept for documentation/UI.
+ports:
+  8089/tcp: 8089
+ports_description:
+  8089/tcp: Web interface and API
+
+# Link the "Open Web UI" button to the Channels DVR admin interface.
+webui: "http://[HOST]:8089"
+panel_icon: mdi:television-classic
+
+# Storage:
+#   - config/database  -> the add-on's own persistent config dir  (/channels-dvr)
+#   - recordings       -> Home Assistant's /media share           (/shares/DVR)
+map:
+  - type: addon_config
+    read_only: false
+    path: /channels-dvr
+  - type: media
+    read_only: false
+    path: /shares/DVR
+
+# Hardware transcoding via VA-API (Intel Quick Sync or AMD VCN/AMF).
+# Both Intel and AMD GPUs are reached through the /dev/dri render node on Linux.
+# Remove this block on boards without a /dev/dri render node (e.g. most ARM
+# devices like Home Assistant Green/Yellow) or the add-on will fail to start.
+# For NVIDIA (NVENC), use the separate "Channels DVR (NVIDIA)" add-on.
+devices:
+  - /dev/dri
