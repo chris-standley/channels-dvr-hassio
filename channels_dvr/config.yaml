@@ -1,7 +1,7 @@
 # Home Assistant add-on configuration for Channels DVR Server
 # Docs: https://developers.home-assistant.io/docs/add-ons/configuration
 name: Channels DVR (Intel / AMD)
-version: "1.0.0"
+version: "1.0.1"
 slug: channels_dvr
 description: >-
   Channels DVR Server with Intel Quick Sync / AMD VA-API hardware transcoding —
@@ -30,8 +30,20 @@ ports:
 ports_description:
   8089/tcp: Web interface and API
 
-# Link the "Open Web UI" button to the Channels DVR admin interface.
+# Link the "Open Web UI" button to the Channels DVR admin interface (direct,
+# LAN access).
 webui: "http://[HOST]:[PORT:8089]"
+
+# EXPERIMENTAL: expose the admin UI through Home Assistant's authenticated,
+# TLS-terminated ingress tunnel — handy for reaching the admin page while away
+# from home (via your remote HA access) without exposing 8089 to the internet.
+# Channels client apps still connect directly to the LAN port; ingress only
+# proxies the admin web UI. This may not work: (a) Channels' UI may not support
+# being served under a subpath, and (b) ingress alongside host_network is not
+# officially supported. If the ingress panel loads blank or 502s, remove these
+# two lines.
+ingress: true
+ingress_port: 8089
 panel_icon: mdi:television-classic
 
 # Storage:
