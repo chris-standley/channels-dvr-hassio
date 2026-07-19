@@ -1,0 +1,53 @@
+# Home Assistant app configuration for Jellyfin (Intel / AMD)
+# Docs: https://developers.home-assistant.io/docs/apps/configuration
+name: Jellyfin (Intel / AMD)
+version: "1.0.0"
+slug: jellyfin
+description: >-
+  Jellyfin — the free software media system. Stream your movies, shows, music,
+  and photos to every device, with Intel Quick Sync / AMD VA-API hardware
+  transcoding. For NVIDIA GPUs, use the "Jellyfin (NVIDIA)" app instead.
+url: https://jellyfin.org/
+# The official Jellyfin image is multi-arch (amd64 + arm64).
+arch:
+  - aarch64
+  - amd64
+
+# The upstream image ships its own entrypoint that launches Jellyfin.
+init: false
+startup: application
+boot: auto
+
+# Direct LAN access on 8096. Jellyfin does not need host networking for the web
+# UI or streaming, so it runs on the default bridge network — which lets ingress
+# work cleanly (see below). LAN auto-discovery / DLNA would need host networking.
+ports:
+  8096/tcp: 8096
+ports_description:
+  8096/tcp: Web interface and API
+
+# Jellyfin supports being served under a subpath, so Home Assistant ingress
+# works: reach the UI remotely through HA's authenticated, TLS-terminated tunnel
+# without exposing a port. LAN clients can still use the direct port above.
+ingress: true
+ingress_port: 8096
+panel_icon: mdi:jellyfish
+
+# Storage:
+#   - config/database/metadata -> the app's own config dir (/config), on the
+#     data disk; included in backups.
+#   - media library            -> Home Assistant's /media share (/media),
+#     which can live on a second disk shared with other media apps.
+map:
+  - type: addon_config
+    read_only: false
+    path: /config
+  - type: media
+    read_only: false
+    path: /media
+
+# Hardware transcoding via VA-API (Intel Quick Sync or AMD). Enable it in
+# Jellyfin under Dashboard -> Playback. Remove this block on hosts without a
+# /dev/dri render node. For NVIDIA (NVENC), use the "Jellyfin (NVIDIA)" app.
+devices:
+  - /dev/dri

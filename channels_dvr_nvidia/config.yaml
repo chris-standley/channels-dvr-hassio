@@ -1,12 +1,12 @@
-# Home Assistant add-on configuration for Channels DVR Server (NVIDIA / NVENC)
-# Docs: https://developers.home-assistant.io/docs/add-ons/configuration
+# Home Assistant app configuration for Channels DVR Server (NVIDIA / NVENC)
+# Docs: https://developers.home-assistant.io/docs/apps/configuration
 name: Channels DVR (NVIDIA)
 version: "1.0.2"
 slug: channels_dvr_nvidia
 description: >-
   Channels DVR Server with NVIDIA NVENC hardware transcoding. Requires a Home
   Assistant host with NVIDIA drivers and GPU device access (see docs). For Intel
-  or AMD GPUs, use the "Channels DVR (Intel / AMD)" add-on instead.
+  or AMD GPUs, use the "Channels DVR (Intel / AMD)" app instead.
 url: https://getchannels.com/dvr-server/
 # NVIDIA NVENC is only meaningful on amd64 hosts with an NVIDIA GPU.
 arch:
@@ -28,8 +28,8 @@ ports_description:
 webui: "http://[HOST]:[PORT:8089]"
 panel_icon: mdi:television-classic
 
-# Storage (identical layout to the Intel/AMD add-on, but a SEPARATE config dir):
-#   - config/database  -> this add-on's own config dir  (/channels-dvr)
+# Storage (identical layout to the Intel/AMD app, but a SEPARATE config dir):
+#   - config/database  -> this app's own config dir  (/channels-dvr)
 #   - recordings       -> Home Assistant's /media share (/shares/DVR)
 map:
   - type: addon_config
@@ -41,7 +41,7 @@ map:
 
 # NVIDIA GPU device nodes. These must exist on the host (created by the NVIDIA
 # kernel driver). If your GPU is not index 0, or the driver exposes different
-# nodes, adjust this list. The add-on will fail to start if a listed device is
+# nodes, adjust this list. The app will fail to start if a listed device is
 # missing — see DOCS.md for the full host requirements.
 devices:
   - /dev/nvidia0

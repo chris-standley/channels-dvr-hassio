@@ -1,11 +1,12 @@
 name: Update base image
 
-# Watches the upstream fancybits/channels-dvr tags and, when the image digest
-# changes, pins the new digest in the Dockerfile and bumps the add-on version
-# so Home Assistant offers an update. Runs daily and can be triggered manually.
+# Watches each app's upstream image tag and, when the image digest changes,
+# pins the new digest in that app's Dockerfile and bumps its version so Home
+# Assistant offers an update. Runs daily and can be triggered manually.
 #
-# Note: this only tracks the *base image* (ffmpeg/OS/GPU libs), which changes
-# infrequently — the Channels server itself self-updates at runtime.
+# Note: this tracks the *base image* (ffmpeg / OS / GPU libs). For Channels DVR
+# the server self-updates at runtime; for Jellyfin the image update *is* the
+# server update.
 
 on:
   schedule:
@@ -22,35 +23,50 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Pin new digests and bump versions
+        id: bump
         run: |
           set -euo pipefail
 
-          REPO="fancybits/channels-dvr"
-
-          # dir -> upstream tag it tracks
-          declare -A TAGS=(
-            ["channels_dvr"]="latest"
-            ["channels_dvr_nvidia"]="nvidia"
+          # app dir -> upstream image reference (registry/repo:tag)
+          declare -A IMAGES=(
+            ["channels_dvr"]="fancybits/channels-dvr:latest"
+            ["channels_dvr_nvidia"]="fancybits/channels-dvr:nvidia"
+            ["jellyfin"]="ghcr.io/jellyfin/jellyfin:latest"
+            ["jellyfin_nvidia"]="ghcr.io/jellyfin/jellyfin:latest"
           )
 
+          # Resolve the manifest (list) digest for an image ref, on Docker Hub
+          # or ghcr.io. Echoes e.g. "sha256:...".
           get_digest() {
-            local tag="$1" token
-            token=$(curl -fsSL "https://auth.docker.io/token?service=registry.docker.io&scope=repository:${REPO}:pull" | jq -r .token)
+            local image="$1" tag repo_part repo token api
+            tag="${image##*:}"
+            repo_part="${image%:*}"
+            if [[ "$repo_part" == ghcr.io/* ]]; then
+              repo="${repo_part#ghcr.io/}"
+              token=$(curl -fsSL "https://ghcr.io/token?scope=repository:${repo}:pull" | jq -r .token)
+              api="https://ghcr.io"
+            else
+              repo="$repo_part"
+              token=$(curl -fsSL "https://auth.docker.io/token?service=registry.docker.io&scope=repository:${repo}:pull" | jq -r .token)
+              api="https://registry-1.docker.io"
+            fi
             curl -fsSL -o /dev/null -D - \
               -H "Authorization: Bearer ${token}" \
               -H "Accept: application/vnd.oci.image.index.v1+json" \
               -H "Accept: application/vnd.docker.distribution.manifest.list.v2+json" \
-              "https://registry-1.docker.io/v2/${REPO}/manifests/${tag}" \
+              "${api}/v2/${repo}/manifests/${tag}" \
               | tr -d '\r' | awk 'tolower($1)=="docker-content-digest:"{print $2}'
           }
 
           changed=0
 
-          for dir in "${!TAGS[@]}"; do
-            tag="${TAGS[$dir]}"
-            new="$(get_digest "$tag")"
+          for dir in "${!IMAGES[@]}"; do
+            image="${IMAGES[$dir]}"
+            repo_ref="${image%:*}"          # registry/repo without the tag
+            tag="${image##*:}"
+            new="$(get_digest "$image")"
             if [ -z "$new" ]; then
-              echo "::error::Could not resolve digest for ${REPO}:${tag}"
+              echo "::error::Could not resolve digest for ${image}"
               exit 1
             fi
 
@@ -61,7 +77,7 @@ jobs:
             fi
 
             echo "$dir: ${cur:-<none>} -> @${new}"
-            sed -i -E "s|^ARG BUILD_FROM=.*|ARG BUILD_FROM=${REPO}@${new}|" "$dir/Dockerfile"
+            sed -i -E "s|^ARG BUILD_FROM=.*|ARG BUILD_FROM=${repo_ref}@${new}|" "$dir/Dockerfile"
 
             oldv="$(grep -oE '^version:[[:space:]]*"?[0-9]+\.[0-9]+\.[0-9]+' "$dir/config.yaml" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')"
             IFS=. read -r a b c <<< "$oldv"
@@ -78,8 +94,7 @@ jobs:
               echo "## ${newv} — $(date -u +%Y-%m-%d)"
               echo
               echo "- Updated the base image to a new upstream build (tracks the \`${tag}\` tag)."
-              echo "  This refreshes the bundled runtime (ffmpeg / OS / GPU libraries); the"
-              echo "  Channels DVR server itself self-updates separately at runtime."
+              echo "  This refreshes the bundled runtime (ffmpeg / OS / GPU libraries)."
               echo "  Pinned digest: \`${new}\`"
               echo
               tail -n +2 "$changelog"
@@ -90,7 +105,6 @@ jobs:
           done
 
           echo "changed=${changed}" >> "$GITHUB_OUTPUT"
-        id: bump
 
       - name: Commit and push
         if: steps.bump.outputs.changed == '1'
@@ -99,5 +113,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "chore: update Channels DVR base image digest and bump version"
+          git commit -m "chore: update base image digests and bump app versions"
           git push

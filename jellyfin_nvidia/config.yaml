@@ -1,0 +1,50 @@
+# Home Assistant app configuration for Jellyfin (NVIDIA / NVENC)
+# Docs: https://developers.home-assistant.io/docs/apps/configuration
+name: Jellyfin (NVIDIA)
+version: "1.0.0"
+slug: jellyfin_nvidia
+description: >-
+  Jellyfin media system with NVIDIA NVENC hardware transcoding. Requires a host
+  with NVIDIA drivers and GPU device access (see docs). For Intel or AMD GPUs,
+  use the "Jellyfin (Intel / AMD)" app instead.
+url: https://jellyfin.org/
+# NVENC is only meaningful on amd64 hosts with an NVIDIA GPU.
+arch:
+  - amd64
+
+# The upstream image ships its own entrypoint that launches Jellyfin.
+init: false
+startup: application
+boot: auto
+
+ports:
+  8096/tcp: 8096
+ports_description:
+  8096/tcp: Web interface and API
+
+# Jellyfin supports subpaths, so Home Assistant ingress works for authenticated
+# remote access. LAN clients can still use the direct port above.
+ingress: true
+ingress_port: 8096
+panel_icon: mdi:jellyfish
+
+# Storage (same layout as the Intel/AMD app, but a SEPARATE config dir):
+#   - config/database/metadata -> this app's own config dir (/config)
+#   - media library            -> Home Assistant's /media share (/media)
+map:
+  - type: addon_config
+    read_only: false
+    path: /config
+  - type: media
+    read_only: false
+    path: /media
+
+# NVIDIA GPU device nodes (created by the host driver). Adjust if your GPU is
+# not index 0. The app will fail to start if a listed device is missing — see
+# DOCS.md for the full host requirements.
+devices:
+  - /dev/nvidia0
+  - /dev/nvidiactl
+  - /dev/nvidia-uvm
+  - /dev/nvidia-uvm-tools
+  - /dev/nvidia-modeset

@@ -1,14 +1,14 @@
-# Channels DVR (NVIDIA) — Home Assistant Add-on
+# Channels DVR (NVIDIA) — Home Assistant App
 
 Run [Channels DVR Server](https://getchannels.com/dvr-server/) as a Home
-Assistant add-on, wrapping the **official** `fancybits/channels-dvr:nvidia`
+Assistant app, wrapping the **official** `fancybits/channels-dvr:nvidia`
 image for **NVIDIA NVENC** hardware transcoding.
 
-For Intel or AMD GPUs, use the **Channels DVR (Intel / AMD)** add-on instead.
+For Intel or AMD GPUs, use the **Channels DVR (Intel / AMD)** app instead.
 
 - **Web UI / API:** port `8089`
 - **Networking:** host network (required for tuner discovery + DLNA)
-- **Config/database:** the add-on's own config directory (backed up)
+- **Config/database:** the app's own config directory (backed up)
 - **Recordings:** the Home Assistant `/media` share
 - **Hardware transcoding:** NVIDIA NVENC via `/dev/nvidia*` devices
 
@@ -20,7 +20,7 @@ For Intel or AMD GPUs, use the **Channels DVR (Intel / AMD)** add-on instead.
 
 See [DOCS.md](DOCS.md) for full requirements, installation, and troubleshooting.
 
-> **Unofficial:** this is a community add-on and is **not affiliated with,
+> **Unofficial:** this is a community app and is **not affiliated with,
 > endorsed by, or supported by Fancy Bits / Channels**. It wraps the official,
 > unmodified `fancybits/channels-dvr:nvidia` image. "Channels" and related marks
 > belong to their respective owners. See [../DISCLAIMER.md](../DISCLAIMER.md).

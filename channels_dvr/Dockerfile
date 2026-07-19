@@ -1,11 +1,11 @@
-# Wrap the official Channels DVR image as a Home Assistant add-on.
+# Wrap the official Channels DVR image as a Home Assistant app.
 #
 # Tracks the fancybits/channels-dvr:latest tag, pinned by digest for
 # reproducible builds. The digest is a multi-arch manifest (amd64 + arm64), so
 # FROM resolves to the correct architecture at build time — no per-arch
 # templating needed.
 #
-# The digest below and the add-on `version` are updated automatically by
+# The digest below and the app `version` are updated automatically by
 # .github/workflows/update-base-image.yml when the upstream tag changes.
 #
 # Since Supervisor 2026.04.0 the BUILD_FROM arg is no longer injected, so we
@@ -14,7 +14,7 @@ ARG BUILD_FROM=fancybits/channels-dvr@sha256:438e362cf739f4d002ecdcc17baee6917ec
 FROM ${BUILD_FROM}
 
 # The upstream image already defines ENTRYPOINT/CMD that launch the DVR server,
-# so we intentionally do not override them — we only attach add-on metadata.
+# so we intentionally do not override them — we only attach app metadata.
 
 # Build args supplied by the Home Assistant builder (unused but kept for
 # compatibility with `docker build` invocations).
@@ -32,4 +32,4 @@ LABEL \
   io.hass.type="addon" \
   io.hass.version="${BUILD_VERSION}" \
   maintainer="Chris Standley <chris@cstandley.com>" \
-  org.opencontainers.image.source="https://github.com/chris-standley/channels-dvr-hassio"
+  org.opencontainers.image.source="https://github.com/chris-standley/home-assistant-addons"

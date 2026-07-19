@@ -1,25 +1,22 @@
-# Wrap the official Channels DVR NVIDIA image as a Home Assistant app.
+# Wrap the official Jellyfin image as a Home Assistant app (NVIDIA variant).
 #
-# Tracks the fancybits/channels-dvr:nvidia tag, pinned by digest for
-# reproducible builds. It bundles the NVENC/CUDA userspace libraries; the
-# matching NVIDIA kernel driver and /dev/nvidia* devices must be provided by
-# the host (see DOCS.md).
+# Same official image as the Intel/AMD app — ghcr.io/jellyfin/jellyfin bundles
+# jellyfin-ffmpeg with NVENC/CUDA support — pinned by digest. This variant just
+# maps the NVIDIA device nodes (in config.yaml) and declares the NVIDIA runtime
+# capabilities below. The matching NVIDIA kernel driver must be on the host.
 #
 # The digest below and the app `version` are updated automatically by
 # .github/workflows/update-base-image.yml when the upstream tag changes.
 #
 # Since Supervisor 2026.04.0 the BUILD_FROM arg is no longer injected, so we
 # declare our own default here.
-ARG BUILD_FROM=fancybits/channels-dvr@sha256:fd0f0fd21d70ec47f5a9237177ad9624b221b855f971d042f031daae20ccae88
+ARG BUILD_FROM=ghcr.io/jellyfin/jellyfin@sha256:45f648c382a0c8b552582fcea40e95cb17c5d475473a891cba0eb7523fb92112
 FROM ${BUILD_FROM}
-
-# The upstream image already defines ENTRYPOINT/CMD that launch the DVR server,
-# so we do not override them — we only attach app metadata.
 
 ARG BUILD_ARCH
 ARG BUILD_DATE
-ARG BUILD_DESCRIPTION="Channels DVR Server (NVIDIA) for Home Assistant"
-ARG BUILD_NAME="Channels DVR (NVIDIA)"
+ARG BUILD_DESCRIPTION="Jellyfin (NVIDIA) for Home Assistant"
+ARG BUILD_NAME="Jellyfin (NVIDIA)"
 ARG BUILD_REF
 ARG BUILD_VERSION
 

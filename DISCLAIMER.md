@@ -1,24 +1,40 @@
 # Disclaimer
 
-**This is an unofficial, community-maintained project. It is NOT affiliated
-with, endorsed by, sponsored by, or supported by Fancy Bits, LLC or the Channels
-team in any way.**
+**This is an unofficial, community-maintained collection of Home Assistant apps.
+It is NOT affiliated with, endorsed by, sponsored by, or supported by any of the
+projects whose software it packages.**
 
+Each app in this repository simply **wraps an official, unmodified upstream
+Docker image** so it can be installed and managed as a Home Assistant app. This
+project does **not** modify or redistribute the upstream software itself.
+
+## Channels DVR apps
+
+- Not affiliated with, endorsed by, or supported by **Fancy Bits, LLC** or the
+  Channels team.
 - "Channels", "Channels DVR", and related names and logos are trademarks of
-  their respective owners (Fancy Bits, LLC). They are used here only to describe
-  what this add-on runs. No trademark ownership or endorsement is claimed or
-  implied.
-- This project does **not** redistribute or modify the Channels DVR software.
-  It only **wraps the official, unmodified `fancybits/channels-dvr` Docker
-  image** so it can be installed and managed as a Home Assistant add-on. The
-  Channels DVR server binary is downloaded by that official image at runtime,
-  directly from Fancy Bits — not by this project.
-- Likewise, this project is not affiliated with or endorsed by Home Assistant /
-  Open Home Foundation.
-- The Channels DVR software is subject to its own license and terms of service.
-  Your use of Channels DVR is governed by those terms, not by this project.
-- This add-on is provided "as is", without warranty of any kind. Use at your own
-  risk.
+  their respective owners (Fancy Bits, LLC), used only to describe what the app
+  runs. No trademark ownership or endorsement is claimed or implied.
+- Wraps the official `fancybits/channels-dvr` image. The Channels DVR server
+  binary is downloaded by that image at runtime, directly from Fancy Bits.
+- For official support: <https://getchannels.com> and
+  <https://community.getchannels.com>.
 
-For official Channels support, use the official channels only:
-<https://getchannels.com> and <https://community.getchannels.com>.
+## Jellyfin apps
+
+- Not affiliated with, endorsed by, or supported by the **Jellyfin project**.
+- "Jellyfin" and related names and logos are trademarks of their respective
+  owners, used only to describe what the app runs. No trademark ownership or
+  endorsement is claimed or implied.
+- Wraps the official `jellyfin/jellyfin` image.
+- For official support: <https://jellyfin.org> and
+  <https://forum.jellyfin.org>.
+
+## General
+
+- This project is not affiliated with or endorsed by Home Assistant / the Open
+  Home Foundation.
+- The packaged software is subject to its own license and terms of service; your
+  use of it is governed by those terms, not by this project.
+- These apps are provided "as is", without warranty of any kind. Use at your own
+  risk.

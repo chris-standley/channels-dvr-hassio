@@ -2,7 +2,7 @@
 
 ## 1.0.2
 
-- Version aligned with the Channels DVR (Intel / AMD) add-on so both share the
+- Version aligned with the Channels DVR (Intel / AMD) app so both share the
   same version number. No functional change.
 
 ## 1.0.0
