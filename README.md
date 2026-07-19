@@ -138,16 +138,19 @@ drive 2**, so recordings sit alongside your other media:
 ├── repository.yaml          # Repository metadata (name, url, maintainer)
 ├── README.md                # This file
 ├── DISCLAIMER.md            # Full non-affiliation / trademark statement
+├── .github/workflows/       # CI: auto-update the base image digest + version
 ├── channels_dvr/            # Intel / AMD (VA-API) add-on
 │   ├── config.yaml          # Add-on configuration / manifest
-│   ├── Dockerfile           # Wraps fancybits/channels-dvr:latest
+│   ├── Dockerfile           # Wraps fancybits/channels-dvr (digest-pinned)
 │   ├── README.md            # Store summary
-│   └── DOCS.md              # Full documentation (Documentation tab)
+│   ├── DOCS.md              # Full documentation (Documentation tab)
+│   └── CHANGELOG.md         # Shown in Home Assistant's update dialog
 └── channels_dvr_nvidia/     # NVIDIA (NVENC) add-on
-    ├── config.yaml          # Wraps fancybits/channels-dvr:nvidia
+    ├── config.yaml          # Wraps fancybits/channels-dvr:nvidia (digest-pinned)
     ├── Dockerfile
     ├── README.md
-    └── DOCS.md
+    ├── DOCS.md
+    └── CHANGELOG.md
 ```
 
 ### Optional assets

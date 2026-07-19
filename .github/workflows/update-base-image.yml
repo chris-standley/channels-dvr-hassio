@@ -69,6 +69,23 @@ jobs:
             sed -i -E "s|^version:.*|version: \"${newv}\"|" "$dir/config.yaml"
             echo "$dir: version ${oldv} -> ${newv}"
 
+            # Prepend a changelog entry so Home Assistant shows a note on the update.
+            changelog="$dir/CHANGELOG.md"
+            [ -f "$changelog" ] || printf '# Changelog\n' > "$changelog"
+            {
+              echo "# Changelog"
+              echo
+              echo "## ${newv} — $(date -u +%Y-%m-%d)"
+              echo
+              echo "- Updated the base image to a new upstream build (tracks the \`${tag}\` tag)."
+              echo "  This refreshes the bundled runtime (ffmpeg / OS / GPU libraries); the"
+              echo "  Channels DVR server itself self-updates separately at runtime."
+              echo "  Pinned digest: \`${new}\`"
+              echo
+              tail -n +2 "$changelog"
+            } > "${changelog}.tmp"
+            mv "${changelog}.tmp" "$changelog"
+
             changed=1
           done
 
