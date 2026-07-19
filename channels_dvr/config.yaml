@@ -31,7 +31,7 @@ ports_description:
   8089/tcp: Web interface and API
 
 # Link the "Open Web UI" button to the Channels DVR admin interface.
-webui: "http://[HOST]:8089"
+webui: "http://[HOST]:[PORT:8089]"
 panel_icon: mdi:television-classic
 
 # Storage:
