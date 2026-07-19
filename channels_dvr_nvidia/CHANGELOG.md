@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2
+
+- Version aligned with the Channels DVR (Intel / AMD) add-on so both share the
+  same version number. No functional change.
+
 ## 1.0.0
 
 - Initial release. Channels DVR Server with NVIDIA NVENC hardware transcoding,

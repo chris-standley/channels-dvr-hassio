@@ -1,7 +1,7 @@
 # Home Assistant add-on configuration for Channels DVR Server (NVIDIA / NVENC)
 # Docs: https://developers.home-assistant.io/docs/add-ons/configuration
 name: Channels DVR (NVIDIA)
-version: "1.0.0"
+version: "1.0.2"
 slug: channels_dvr_nvidia
 description: >-
   Channels DVR Server with NVIDIA NVENC hardware transcoding. Requires a Home
