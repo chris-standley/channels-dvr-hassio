@@ -50,12 +50,12 @@ Notable differences between the two apps:
 3. Add this repository's URL:
 
    ```
-   https://github.com/chris-standley/home-assistant-addons
+   https://github.com/chris-standley/home-assistant-apps
    ```
 
 4. The apps above will appear in the store, ready to install.
 
-[![Open your Home Assistant instance and show the add app repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fchris-standley%2Fhome-assistant-addons)
+[![Open your Home Assistant instance and show the add app repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fchris-standley%2Fhome-assistant-apps)
 
 ### Local install (no public GitHub repo needed)
 

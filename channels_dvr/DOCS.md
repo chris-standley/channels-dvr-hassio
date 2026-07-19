@@ -13,7 +13,7 @@ Assistant Supervisor.
 
 1. In Home Assistant, go to **Settings → Apps → App Store**.
 2. Click the ⋮ menu (top-right) → **Repositories**, and add the URL of this
-   repository (e.g. `https://github.com/chris-standley/home-assistant-addons`).
+   repository (e.g. `https://github.com/chris-standley/home-assistant-apps`).
 3. Find **Channels DVR** in the store and click **Install**. The first build
    pulls the upstream image and can take several minutes.
 4. Start the app, then click **Open Web UI** (or browse to

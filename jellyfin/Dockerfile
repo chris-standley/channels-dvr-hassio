@@ -29,4 +29,4 @@ LABEL \
   io.hass.type="addon" \
   io.hass.version="${BUILD_VERSION}" \
   maintainer="Chris Standley <chris@cstandley.com>" \
-  org.opencontainers.image.source="https://github.com/chris-standley/home-assistant-addons"
+  org.opencontainers.image.source="https://github.com/chris-standley/home-assistant-apps"

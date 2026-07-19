@@ -52,7 +52,7 @@ devices:
    ⋮ → Repositories**):
 
    ```
-   https://github.com/chris-standley/home-assistant-addons
+   https://github.com/chris-standley/home-assistant-apps
    ```
 
 2. Install **Channels DVR (NVIDIA)**. The first build pulls the upstream NVIDIA

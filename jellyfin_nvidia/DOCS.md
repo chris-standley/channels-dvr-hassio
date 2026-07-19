@@ -48,7 +48,7 @@ devices:
 1. Add this repository (**Settings → Apps → App Store → ⋮ → Repositories**):
 
    ```
-   https://github.com/chris-standley/home-assistant-addons
+   https://github.com/chris-standley/home-assistant-apps
    ```
 
 2. Install **Jellyfin (NVIDIA)** and start it.

@@ -13,7 +13,7 @@ This app wraps the **official** `ghcr.io/jellyfin/jellyfin` image, which bundles
    ⋮ → Repositories**):
 
    ```
-   https://github.com/chris-standley/home-assistant-addons
+   https://github.com/chris-standley/home-assistant-apps
    ```
 
 2. Install **Jellyfin (Intel / AMD)**. The first build pulls the upstream image
